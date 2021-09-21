@@ -16,12 +16,11 @@ import {
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-// import PeopleIcon from '@material-ui/icons/People';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
-import { BrowserRouter, Link, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Dashboard from '../Dashboard';
 import Product from '../Product';
