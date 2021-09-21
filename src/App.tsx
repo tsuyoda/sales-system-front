@@ -1,20 +1,32 @@
 import React from 'react';
-import './App.css';
-import logo from './logo.svg';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
+import { AuthProvider } from './contexts/auth';
+import 'react-toastify/dist/ReactToastify.css';
+import Routes from './routes';
 
 function App() {
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          type: 'dark'
+        }
+      }),
+    undefined
+  );
+
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </AuthProvider>
+      <ToastContainer />
+    </ThemeProvider>
   );
 }
 
