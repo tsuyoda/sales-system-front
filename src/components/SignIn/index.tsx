@@ -9,32 +9,12 @@ import {
   TextField,
   Typography,
   CssBaseline,
-  Button,
-  makeStyles
+  Button
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Loader from 'react-loader-spinner';
 import { useAuth } from '../../contexts/auth';
-
-const useStyles = makeStyles(theme => ({
-  main: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  form: {
-    marginTop: theme.spacing(1),
-    width: '100%'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.light
-  },
-  submit: {
-    margin: theme.spacing(2, 0, 3)
-  }
-}));
+import { useStyles } from './styles';
 
 function SignIn() {
   const classes = useStyles();
@@ -67,9 +47,10 @@ function SignIn() {
       try {
         setLoading(true);
         await signIn({ username, password });
+        toast.dismiss();
         toast.success('Autenticado com sucesso!');
         history.push('/');
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
         if ([404, 401].includes(err.response?.status)) {
           toast.error(`Falha na autenticação: Verifique seu usuário ou senha.`);
