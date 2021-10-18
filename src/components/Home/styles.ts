@@ -59,7 +59,7 @@ export const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar
   },
   content: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(5),
     flexGrow: 1
   }
 }));
