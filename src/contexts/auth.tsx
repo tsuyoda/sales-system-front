@@ -11,8 +11,8 @@ function AuthProvider({ children }: IAuthProviderProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('@SalesSystem:user');
-    const storedToken = localStorage.getItem('@SalesSystem:token');
+    const storedUser = sessionStorage.getItem('@SalesSystem:user');
+    const storedToken = sessionStorage.getItem('@SalesSystem:token');
 
     if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
@@ -30,21 +30,21 @@ function AuthProvider({ children }: IAuthProviderProps) {
     setUser(data.user);
     api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
-    localStorage.setItem('@SalesSystem:user', JSON.stringify(data.user));
-    localStorage.setItem('@SalesSystem:token', data.token);
-    localStorage.setItem('@SalesSystem:role', data.role.name);
+    sessionStorage.setItem('@SalesSystem:user', JSON.stringify(data.user));
+    sessionStorage.setItem('@SalesSystem:token', data.token);
+    sessionStorage.setItem('@SalesSystem:role', data.role.name);
   };
 
   const signOut = () => {
     setUser(null);
 
-    localStorage.clear();
+    sessionStorage.clear();
 
     toast.success('Desconectado com sucesso!');
   };
 
   const signed = () => {
-    const storedUser = localStorage.getItem('@SalesSystem:user');
+    const storedUser = sessionStorage.getItem('@SalesSystem:user');
 
     if (storedUser) {
       return true;

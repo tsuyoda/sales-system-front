@@ -10,9 +10,9 @@ const responseSuccessHandler = (response: any) => {
   return response;
 };
 
-const responseErrorHandler = (error: any) => {
-  if (window.location.href !== `${APP_BASE_URL}/login` && error.response.status === 401) {
-    localStorage.clear();
+const responseErrorHandler = (error: { response: { status: number } }) => {
+  if (window.location.href !== `${APP_BASE_URL}/login` && error.response?.status === 401) {
+    sessionStorage.clear();
     // eslint-disable-next-line no-alert
     alert('Sessão expirada. Faça o login novamente.');
     window.location.href = '/login';
