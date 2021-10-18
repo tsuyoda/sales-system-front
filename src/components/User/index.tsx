@@ -2,11 +2,12 @@ import { Typography, Grid, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
+import { useHistory } from 'react-router-dom';
 import api from '../../services/api';
-import Filter from './Filter';
 import { IUserFilterParams, IUser } from '../../interfaces/IUser';
-import TableUser from './Table';
+import TableUser from './List/Table';
 import { useStyles } from './styles';
+import Filter from './List/Filter';
 
 function User() {
   const classes = useStyles();
@@ -16,6 +17,8 @@ function User() {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
   const [filters, setFilters] = useState<IUserFilterParams>({});
+
+  const history = useHistory();
 
   const getUsers = async (params: IUserFilterParams) => {
     const request = await api.get('/user', { params });
@@ -40,6 +43,10 @@ function User() {
     setPage(newPage);
   };
 
+  const handleCreateButton = () => {
+    history.push('/user/register');
+  };
+
   return (
     <>
       <Grid container className={classes.header}>
@@ -52,8 +59,8 @@ function User() {
           </Typography>
         </Grid>
         <Grid item xs={12} md={1} className={classes.addButtonGrid}>
-          <Button color='primary' variant='contained' fullWidth>
-            <AddIcon /> Criar
+          <Button color='primary' variant='contained' fullWidth onClick={handleCreateButton} startIcon={<AddIcon />}>
+            Criar
           </Button>
         </Grid>
       </Grid>
