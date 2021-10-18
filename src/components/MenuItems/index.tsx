@@ -10,7 +10,7 @@ import React from 'react';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 function MenuItems() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
