@@ -1,10 +1,11 @@
 import { Formik } from 'formik';
 import React, { useCallback, Dispatch, SetStateAction } from 'react';
-import { IUserFilterParams } from '../../../interfaces/IUser';
 import Form from './Form';
 import { useStyles } from './styles';
 import FilterUserSchema from './validations';
-import { INITIAL_FILTER_VALUES } from '../../../constants/user';
+import { IOption } from '../../../../interfaces/IForm';
+import { INITIAL_FILTER_VALUES } from '../../../../constants/user';
+import { IUserFilterParams } from '../../../../interfaces/IUser';
 
 interface FilterProps {
   setFilters: Dispatch<SetStateAction<IUserFilterParams>>;
@@ -18,7 +19,7 @@ function Filter({ setFilters, setPage }: FilterProps) {
     const filters: IUserFilterParams = {};
 
     if (values.user_search_text) {
-      if (values.user_search_type === 'user_email') {
+      if (values.user_search_type.value === 'user_email') {
         filters.email = values.user_search_text;
       } else {
         filters.name = values.user_search_text;
@@ -26,7 +27,7 @@ function Filter({ setFilters, setPage }: FilterProps) {
     }
 
     if (values.user_search_rule.length !== 0) {
-      filters.role = { name: values.user_search_rule };
+      filters.role = { name: values.user_search_rule.map((option: IOption) => option.value) };
     }
 
     setFilters(filters);

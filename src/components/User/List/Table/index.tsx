@@ -9,9 +9,10 @@ import {
   IconButton,
   TablePagination
 } from '@material-ui/core';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import EditIcon from '@material-ui/icons/Edit';
 import React from 'react';
-import { IUser } from '../../../interfaces/IUser';
+import { useHistory } from 'react-router-dom';
+import { IUser } from '../../../../interfaces/IUser';
 import { useStyles } from './styles';
 
 interface TableUserProps {
@@ -25,6 +26,8 @@ interface TableUserProps {
 
 function TableUser({ rows, totalRows, limit, page, handleChangePage, handleChangeRowsPerPage }: TableUserProps) {
   const classes = useStyles();
+
+  const history = useHistory();
 
   return (
     <>
@@ -41,7 +44,7 @@ function TableUser({ rows, totalRows, limit, page, handleChangePage, handleChang
           </TableHead>
           <TableBody component={Paper}>
             {rows.map(row => (
-              <TableRow key={row.name}>
+              <TableRow key={row.fullName}>
                 <TableCell component='th' scope='row'>
                   {row.fullName}
                 </TableCell>
@@ -49,8 +52,8 @@ function TableUser({ rows, totalRows, limit, page, handleChangePage, handleChang
                 <TableCell align='left'>{row.email}</TableCell>
                 <TableCell align='left'>{row.role.name}</TableCell>
                 <TableCell align='left'>
-                  <IconButton>
-                    <MoreHorizIcon />
+                  <IconButton onClick={() => history.push(`/user/${row._id}/edit`)}>
+                    <EditIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -62,10 +65,8 @@ function TableUser({ rows, totalRows, limit, page, handleChangePage, handleChang
         rowsPerPageOptions={[1, 5, 10, 25]}
         component='div'
         count={totalRows}
-        labelRowsPerPage='Linhas por página'
         rowsPerPage={limit}
         page={page}
-        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
