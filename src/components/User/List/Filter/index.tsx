@@ -10,9 +10,10 @@ import { IUserFilterParams } from '../../../../interfaces/IUser';
 interface FilterProps {
   setFilters: Dispatch<SetStateAction<IUserFilterParams>>;
   setPage: Dispatch<SetStateAction<number>>;
+  setUpdateRows: Dispatch<SetStateAction<boolean>>;
 }
 
-function Filter({ setFilters, setPage }: FilterProps) {
+function Filter({ setFilters, setPage, setUpdateRows }: FilterProps) {
   const classes = useStyles();
 
   const handleOnSubmit = useCallback((values, actions) => {
@@ -29,9 +30,9 @@ function Filter({ setFilters, setPage }: FilterProps) {
     if (values.user_search_rule.length !== 0) {
       filters.role = { name: values.user_search_rule.map((option: IOption) => option.value) };
     }
-
     setFilters(filters);
     setPage(0);
+    setUpdateRows(true);
     actions.setSubmitting(false);
   }, []);
 

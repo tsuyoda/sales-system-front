@@ -71,16 +71,16 @@ function Register() {
     api
       .post('/user', userPaylod)
       .then(() => {
+        actions.setSubmitting(false);
         toast.success('Usuário criado com sucesso!');
         history.push('/user');
       })
       .catch(err => {
         if (err.response) {
           toast.error(`Falha na criação do usuário: ${err.response.data.error}`);
+          actions.setSubmitting(false);
         }
       });
-
-    actions.setSubmitting(false);
   }, []);
 
   return (

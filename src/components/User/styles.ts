@@ -13,11 +13,8 @@ export const useStyles = makeStyles({
     alignItems: 'center',
     paddingRight: 5
   },
-  loading: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 500
+  hide: {
+    display: 'none'
   }
 });
 

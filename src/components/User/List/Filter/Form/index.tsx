@@ -25,6 +25,7 @@ function Form() {
   }, []);
 
   const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>, value: IOption) => {
+    setFieldTouched('user_search_type', true);
     setFieldValue('user_search_type', value);
     setFieldValue('user_search_text', '');
     setErrors({});
@@ -36,6 +37,7 @@ function Form() {
   };
 
   const handleSearchRuleChange = (event: ChangeEvent<HTMLInputElement>, value: IOption) => {
+    setFieldTouched('user_search_rule', true);
     setFieldValue('user_search_rule', value);
   };
 
@@ -102,6 +104,7 @@ function Form() {
             getOptions={getRoles}
             component={MultipleSelectFormField}
             onChange={handleSearchRuleChange}
+            value={values.user_search_rule}
           />
         </Grid>
         <Grid item xs={6} md={1}>

@@ -21,8 +21,7 @@ const useStyles = makeStyles({
 
 function PersonalInfo() {
   const classes = useStyles();
-  const { touched, errors, values, setFieldValue, setFieldTouched, setFieldError } =
-    useFormikContext<IUserRegisterForm>();
+  const { touched, errors, values, setFieldValue, setFieldTouched } = useFormikContext<IUserRegisterForm>();
   const [loadingPostalCode, setLoadingPostalCode] = useState(false);
 
   function sleep(delay = 0) {

@@ -7,6 +7,15 @@ export const useStyles = makeStyles({
   },
   table: {
     minWidth: 650
+  },
+  loading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 500
+  },
+  hide: {
+    display: 'none'
   }
 });
 
