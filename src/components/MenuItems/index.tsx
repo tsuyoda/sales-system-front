@@ -1,75 +1,72 @@
-import { Collapse, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PaymentIcon from '@material-ui/icons/Payment';
-import SecurityIcon from '@material-ui/icons/Security';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBox, faFileInvoice, faUserShield, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faFileInvoice, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import clsx from 'clsx';
+import { useAuth } from '../../contexts/auth';
+import { useStyles } from './style';
 
 function MenuItems() {
-  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
+  const { loadingPermissions, permissions } = useAuth();
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  return (
+  return loadingPermissions ? null : (
     <List style={{ flexGrow: 1 }}>
-      <ListItem button component={Link} to='/order'>
+      <ListItem button component={Link} to='/order' className={clsx({ [classes.hide]: !permissions?.orders?.read })}>
         <ListItemIcon>
           <PaymentIcon />
         </ListItemIcon>
         <ListItemText primary='Pedidos' />
       </ListItem>
-      <ListItem button component={Link} to='/invoice'>
+      <ListItem
+        button
+        component={Link}
+        to='/invoice'
+        className={clsx({ [classes.hide]: !permissions?.invoices?.read })}
+      >
         <ListItemIcon>
           <FontAwesomeIcon icon={faFileInvoice} size='lg' style={{ marginLeft: 5 }} />
         </ListItemIcon>
         <ListItemText primary='Notas Fiscais' />
       </ListItem>
-      <ListItem button component={Link} to='/product'>
+      <ListItem
+        button
+        component={Link}
+        to='/product'
+        className={clsx({ [classes.hide]: !permissions?.products?.read })}
+      >
         <ListItemIcon>
           <FontAwesomeIcon icon={faBox} size='lg' style={{ marginLeft: 3 }} />
         </ListItemIcon>
         <ListItemText primary='Produtos' />
       </ListItem>
-      <ListItem button component={Link} to='/customer'>
+      <ListItem
+        button
+        component={Link}
+        to='/customer'
+        className={clsx({ [classes.hide]: !permissions?.clients?.read })}
+      >
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary='Clientes' />
       </ListItem>
-      <ListItem button component={Link} to='/user'>
+      <ListItem button component={Link} to='/user' className={clsx({ [classes.hide]: !permissions?.users?.read })}>
         <ListItemIcon>
           <AssignmentIndIcon />
         </ListItemIcon>
         <ListItemText primary='Usuários' />
       </ListItem>
-      <ListItem onClick={handleClick} button>
+      <ListItem button component={Link} to='/role' className={clsx({ [classes.hide]: !permissions?.roles?.read })}>
         <ListItemIcon>
           <FontAwesomeIcon icon={faUserShield} size='lg' style={{ marginLeft: 3 }} />
         </ListItemIcon>
         <ListItemText primary='Nível de acesso' />
-        {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={open} timeout='auto' unmountOnExit>
-        <List component='div' disablePadding>
-          <ListItem button component={Link} to='/role'>
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faUserCog} size='lg' style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <ListItemText primary='Funções' />
-          </ListItem>
-          <ListItem button component={Link} to='/permission'>
-            <ListItemIcon>
-              <SecurityIcon />
-            </ListItemIcon>
-            <ListItemText primary='Permissões' />
-          </ListItem>
-        </List>
-      </Collapse>
     </List>
   );
 }
