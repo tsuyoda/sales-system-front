@@ -1,6 +1,7 @@
 import {
   AppBar,
   Badge,
+  Box,
   CssBaseline,
   Divider,
   Drawer,
@@ -16,6 +17,7 @@ import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -27,7 +29,7 @@ import { useStyles } from './styles';
 function Home() {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   const handlerDrawerClose = () => {
     setOpen(false);
@@ -83,9 +85,11 @@ function Home() {
               <ChevronLeftIcon />
             </IconButton>
           </div>
-
           <Divider />
           <MenuItems />
+          <Box component='div' className={clsx({ [classes.hide]: !open, [classes.profileBox]: open })}>
+            <AccountCircleIcon className={classes.profileIcon} /> {user?.name}
+          </Box>
           <Divider />
           <List>
             <ListItem button onClick={handleSignOut}>

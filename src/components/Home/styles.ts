@@ -61,7 +61,14 @@ export const useStyles = makeStyles(theme => ({
   content: {
     padding: theme.spacing(5),
     flexGrow: 1
-  }
+  },
+  profileBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  profileIcon: { marginRight: 5 }
 }));
 
 export default useStyles;
