@@ -3,7 +3,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PaymentIcon from '@material-ui/icons/Payment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBox, faFileInvoice, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faFileInvoice, faTruck, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import clsx from 'clsx';
@@ -54,6 +54,17 @@ function MenuItems() {
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary='Clientes' />
+      </ListItem>
+      <ListItem
+        button
+        component={Link}
+        to='/provider'
+        className={clsx({ [classes.hide]: !permissions?.clients?.read })}
+      >
+        <ListItemIcon>
+          <FontAwesomeIcon icon={faTruck} size='lg' style={{ marginLeft: 2.3 }} />
+        </ListItemIcon>
+        <ListItemText primary='Fornecedores' />
       </ListItem>
       <ListItem button component={Link} to='/user' className={clsx({ [classes.hide]: !permissions?.users?.read })}>
         <ListItemIcon>

@@ -8,6 +8,7 @@ import UserEdit from '../components/User/Edit';
 import Role from '../components/Role';
 import RoleRegister from '../components/Role/Create';
 import RoleEdit from '../components/Role/Edit';
+import Provider from '../components/Provider';
 
 function MenuRoutes() {
   return (
@@ -20,6 +21,7 @@ function MenuRoutes() {
       <Route path='/role/:id/edit' component={RoleEdit} />
       <Route path='/role' component={Role} />
       <Route path='/' component={Dashboard} />
+      <Route path='/provider' component={Provider} />
     </Switch>
   );
 }
