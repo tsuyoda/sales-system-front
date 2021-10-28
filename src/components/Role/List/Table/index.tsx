@@ -112,10 +112,12 @@ function TableRole() {
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(parseInt(event.target.value, 10));
     setPage(0);
+    setUpdateRows(true);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    setUpdateRows(true);
   };
 
   const handleActionsClick = (role: IRole) => (event: React.MouseEvent<HTMLButtonElement>) => {
