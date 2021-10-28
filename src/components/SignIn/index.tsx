@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Loader from 'react-loader-spinner';
+import axios from 'axios';
 import { useAuth } from '../../contexts/auth';
 import { useStyles } from './styles';
 
@@ -50,9 +51,9 @@ function SignIn() {
         toast.dismiss();
         toast.success('Autenticado com sucesso!');
         history.push('/');
-      } catch (err: any) {
+      } catch (err) {
         setLoading(false);
-        if ([404, 401].includes(err.response?.status)) {
+        if (axios.isAxiosError(err) && err.response && [404, 401].includes(err.response.status)) {
           toast.error(`Falha na autenticação: Verifique seu usuário ou senha.`);
         } else {
           toast.error(`Falha na autenticação: Erro no servidor.`);

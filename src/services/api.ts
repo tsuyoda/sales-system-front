@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { API_BASE_URL, APP_BASE_URL } from '../config/app';
 
 const api = axios.create({
@@ -6,7 +6,7 @@ const api = axios.create({
   timeout: 10000
 });
 
-const responseSuccessHandler = (response: any) => {
+const responseSuccessHandler = (response: AxiosResponse) => {
   return response;
 };
 

@@ -9,6 +9,7 @@ const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 function AuthProvider({ children }: IAuthProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [permissions, setPermissions] = useState<any | null>();
   const [loadingPermissions, setLoadingPermissions] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
   }, []);
 
   const accessControl = async (action: string, resource: string): Promise<boolean> => {
-    const response = await api.get('user/my_profile');
+    const response = await api.get('user/my-profile');
 
     const { data: userData } = response.data;
 
@@ -67,6 +68,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
         return [resource.name, actions];
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       Promise.all(permissionsPromises).then((grants: any[]) => {
         setPermissions(Object.fromEntries(grants));
         setLoadingPermissions(false);
