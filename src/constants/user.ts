@@ -23,5 +23,8 @@ export const INITIAL_FORM_VALUES = {
   user_address_complement: '',
   user_address_city: { label: '', value: '' },
   user_address_state: { label: '', value: '' },
-  user_address_postal_code: ''
+  user_address_postal_code: '',
+  user_is_seller: false,
+  user_seller_comission: 0,
+  user_seller_max_discount: 0
 };
