@@ -48,7 +48,7 @@ function MenuItems() {
         button
         component={Link}
         to='/customer'
-        className={clsx({ [classes.hide]: !permissions?.clients?.read })}
+        className={clsx({ [classes.hide]: !permissions?.customers?.read })}
       >
         <ListItemIcon>
           <PeopleIcon />
@@ -59,7 +59,7 @@ function MenuItems() {
         button
         component={Link}
         to='/provider'
-        className={clsx({ [classes.hide]: !permissions?.clients?.read })}
+        className={clsx({ [classes.hide]: !permissions?.providers?.read })}
       >
         <ListItemIcon>
           <FontAwesomeIcon icon={faTruck} size='lg' style={{ marginLeft: 2.3 }} />
