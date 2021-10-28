@@ -5,8 +5,7 @@ import TelField from './TelField';
 
 type TextFormFieldProps = TextFieldProps & {
   value: string;
-  loading: boolean;
-  mask: string;
+  mask?: string;
 };
 
 function TextFormField({ mask, onBlur, onChange, onFocus, value, type, ...props }: TextFormFieldProps) {

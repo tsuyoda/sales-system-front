@@ -1,5 +1,5 @@
 import { TextField, CircularProgress, BaseTextFieldProps } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 import { AxiosRequestConfig } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { IOption } from '../../../../interfaces/IForm';
@@ -74,6 +74,10 @@ function SingleSelectFormField({
     setOpen(false);
   };
 
+  const filterOptions = createFilterOptions<IOption>({
+    stringify: ({ searchByLabel, label }) => `${searchByLabel || label}`
+  });
+
   return (
     <Autocomplete
       {...props}
@@ -83,6 +87,7 @@ function SingleSelectFormField({
       onClose={handleClose}
       onFocus={handleFocus}
       loading={loading}
+      filterOptions={filterOptions}
       getOptionSelected={(option, { value }) => option.value === value}
       getOptionLabel={option => option.label}
       renderInput={params => {
