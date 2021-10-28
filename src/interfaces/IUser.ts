@@ -12,6 +12,7 @@ export interface IUser {
   fullName: string;
   email: string;
   role: IRole;
+  isSeller: boolean;
   createdAt: string;
 }
 
@@ -37,6 +38,9 @@ export interface IUserRegisterForm {
   user_address_city: IOption;
   user_address_postal_code: string;
   user_address_state: IOption;
+  user_is_seller: boolean;
+  user_seller_comission: number;
+  user_seller_max_discount: number;
 }
 
 export interface IUserFilterParams {
