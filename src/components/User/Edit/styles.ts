@@ -26,8 +26,11 @@ export const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end'
   },
-  saveButton: {
+  Button: {
     marginLeft: 10
+  },
+  hide: {
+    display: 'none'
   }
 }));
 

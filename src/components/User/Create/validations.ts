@@ -40,7 +40,23 @@ const UserFormSchema = Yup.object({
   }),
   user_address_street: Yup.string().min(3, 'Digite um endereço válido').required('Campo de endereço é obrigatório'),
   user_address_complement: Yup.string().optional(),
-  user_address_number: Yup.number().required('Campo de número é obrigatório')
+  user_address_number: Yup.number().required('Campo de número é obrigatório'),
+  user_seller_comission: Yup.number().when('user_is_seller', {
+    is: true,
+    then: Yup.number()
+      .min(0, 'Comissão deve ser entre 0% e 100%')
+      .max(100, 'Comissão deve ser entre 0% e 100%')
+      .required('Comissão é obrigatória'),
+    otherwise: Yup.number().optional()
+  }),
+  user_seller_max_discount: Yup.number().when('user_is_seller', {
+    is: true,
+    then: Yup.number()
+      .min(0, 'Desconto máximo deve ser entre 0% e 100%')
+      .max(100, 'Desconto máximo deve ser entre 0% e 100%')
+      .required('Desconto máximo é obrigatória'),
+    otherwise: Yup.number().optional()
+  })
 });
 
 export default UserFormSchema;

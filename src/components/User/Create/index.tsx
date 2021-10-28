@@ -5,13 +5,16 @@ import SaveIcon from '@material-ui/icons/Save';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import clsx from 'clsx';
 import UserFormSchema from './validations';
 import { INITIAL_FORM_VALUES } from '../../../constants/user';
-import { IUserRegisterForm } from '../../../interfaces/IUser';
+import { IUserRegisterForm, IUser } from '../../../interfaces/IUser';
 import api from '../../../services/api';
 import useStyles from './styles';
 import UserInfo from './UserInfo';
 import PersonalInfo from '../SharedForms/PersonalInfo';
+import SellerInfo from '../SharedForms/SellerInfo/index';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,7 +46,7 @@ function Register() {
     setTabValue(value);
   }, []);
 
-  const handleOnSubmit = useCallback((values: IUserRegisterForm, actions) => {
+  const handleOnSubmit = useCallback(async (values: IUserRegisterForm, actions) => {
     const userPaylod = {
       fullName: values.user_full_name,
       email: values.user_email,
@@ -68,19 +71,33 @@ function Register() {
       role: values.user_role.value
     };
 
-    api
-      .post('/user', userPaylod)
-      .then(() => {
+    try {
+      const response = await api.post('/user', userPaylod);
+
+      const { data: user }: { data: IUser } = response.data;
+
+      if (values.user_is_seller) {
+        const sellerPayload = {
+          comission: (values.user_seller_comission || 0) / 100,
+          maxDiscount: (values.user_seller_max_discount || 0) / 100,
+          user: user._id
+        };
+
+        await api.post('/seller', sellerPayload);
+      }
+
+      actions.setSubmitting(false);
+      toast.success('Usuário criado com sucesso!');
+      history.push('/user');
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        toast.error(`Falha na criação do usuário: ${err.response?.data.error}`);
         actions.setSubmitting(false);
-        toast.success('Usuário criado com sucesso!');
-        history.push('/user');
-      })
-      .catch(err => {
-        if (err.response) {
-          toast.error(`Falha na criação do usuário: ${err.response.data.error}`);
-          actions.setSubmitting(false);
-        }
-      });
+      } else {
+        toast.error(`Falha na criação do usuário`);
+        actions.setSubmitting(false);
+      }
+    }
   }, []);
 
   return (
@@ -93,6 +110,7 @@ function Register() {
           <Tabs value={tabValue} onChange={handleTabChange} centered>
             <Tab label='Usuário' />
             <Tab label='Dados pessoais' />
+            <Tab label='Vendas' />
           </Tabs>
         </Box>
       </div>
@@ -107,20 +125,30 @@ function Register() {
                 <TabPanel value={tabValue} index={1}>
                   <PersonalInfo />
                 </TabPanel>
+                <TabPanel value={tabValue} index={2}>
+                  <SellerInfo />
+                </TabPanel>
               </div>
 
               <div className={classes.footerButtons}>
-                {tabValue === 0 ? (
-                  <Button color='primary' variant='contained' onClick={() => setTabValue(1)}>
-                    Próximo
-                  </Button>
-                ) : (
-                  <Button color='primary' variant='contained' onClick={() => setTabValue(0)}>
-                    Anterior
-                  </Button>
-                )}
                 <Button
-                  className={classes.saveButton}
+                  color='primary'
+                  variant='contained'
+                  onClick={() => setTabValue(tabValue - 1)}
+                  className={clsx(classes.Button, { [classes.hide]: tabValue === 0 })}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  color='primary'
+                  variant='contained'
+                  onClick={() => setTabValue(tabValue + 1)}
+                  className={clsx(classes.Button, { [classes.hide]: tabValue === 2 })}
+                >
+                  Próximo
+                </Button>
+                <Button
+                  className={classes.Button}
                   color='secondary'
                   variant='contained'
                   type='submit'

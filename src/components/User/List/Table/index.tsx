@@ -78,10 +78,12 @@ function TableUser({ filters, page, setPage, setUpdateRows, updateRows }: TableU
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(parseInt(event.target.value, 10));
     setPage(0);
+    setUpdateRows(true);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    setUpdateRows(true);
   };
 
   const handleActionsClick = (user: IUser) => (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -175,7 +177,7 @@ function TableUser({ filters, page, setPage, setUpdateRows, updateRows }: TableU
             </MenuItem>
           </Menu>
           <Dialog open={modalDeleteOpen} onClose={handleModalDeleteClose}>
-            <DialogTitle>Você tem certeza que deseja excluir a função abaixo?</DialogTitle>
+            <DialogTitle>Você tem certeza que deseja excluir o usuário abaixo?</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 <strong>Nome</strong>: {currentUser?.name}

@@ -6,13 +6,15 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { toast } from 'react-toastify';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
+import clsx from 'clsx';
 import UserFormSchema from './validations';
 import { INITIAL_FORM_VALUES } from '../../../constants/user';
-import { IUserRegisterForm } from '../../../interfaces/IUser';
+import { IUser, IUserRegisterForm } from '../../../interfaces/IUser';
 import api from '../../../services/api';
 import useStyles from './styles';
 import UserInfo from './UserInfo';
 import PersonalInfo from '../SharedForms/PersonalInfo';
+import SellerInfo from '../SharedForms/SellerInfo';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -61,6 +63,10 @@ function Edit() {
         ? await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${data.address.state}`)
         : null;
 
+      const responseSeller = await api.get('/seller', { params: { user: data._id } });
+
+      const [seller] = responseSeller.data.data;
+
       const values: IUserRegisterForm = {
         user_full_name: data.fullName || '',
         user_email: data.email || '',
@@ -85,7 +91,10 @@ function Edit() {
           label: data.role?.name || '',
           // eslint-disable-next-line no-underscore-dangle
           value: data.role?._id || ''
-        }
+        },
+        user_is_seller: !!seller,
+        user_seller_comission: seller ? seller.comission * 100 : 0,
+        user_seller_max_discount: seller ? seller.maxDiscount * 100 : 0
       };
 
       setUserInfo(values);
@@ -93,10 +102,11 @@ function Edit() {
     });
   }, []);
 
-  const handleOnSubmit = useCallback((values: IUserRegisterForm, actions) => {
+  const handleOnSubmit = useCallback(async (values: IUserRegisterForm, actions) => {
     const userPaylod = {
       fullName: values.user_full_name,
       email: values.user_email,
+      password: values.user_password,
       name: values.user_name,
       doc: {
         id: values.user_doc_id,
@@ -117,21 +127,41 @@ function Edit() {
       role: values.user_role.value
     };
 
-    api
-      .put(`/user/${id}`, userPaylod)
-      .then(() => {
-        toast.success('Usuário atualizado com sucesso!');
-        history.push('/user');
-      })
-      .catch(err => {
-        if (err.response) {
-          toast.error(`Falha na atualização do usuário: ${err.response.data.error}`);
-        } else {
-          toast.error(`Falha na atualização do usuário. Tente novamente mais tarde.`);
-        }
-      });
+    try {
+      const response = await api.put(`/user/${id}`, userPaylod);
 
-    actions.setSubmitting(false);
+      const { data: user }: { data: IUser } = response.data;
+
+      if (values.user_is_seller) {
+        const sellerPayload = {
+          comission: (values.user_seller_comission || 0) / 100,
+          maxDiscount: (values.user_seller_max_discount || 0) / 100,
+          user: user._id
+        };
+
+        const responseSeller = await api.get('/seller', { params: { user: user._id } });
+
+        const [seller] = responseSeller.data.data;
+
+        if (seller) {
+          await api.put(`/seller/${seller._id}`, sellerPayload);
+        } else {
+          await api.post('/seller', sellerPayload);
+        }
+      }
+
+      actions.setSubmitting(false);
+      toast.success('Usuário criado com sucesso!');
+      history.push('/user');
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        toast.error(`Falha na criação do usuário: ${err.response?.data.error}`);
+        actions.setSubmitting(false);
+      } else {
+        toast.error(`Falha na criação do usuário`);
+        actions.setSubmitting(false);
+      }
+    }
   }, []);
 
   return loading ? null : (
@@ -144,6 +174,7 @@ function Edit() {
           <Tabs value={tabValue} onChange={handleTabChange} centered>
             <Tab label='Usuário' />
             <Tab label='Dados pessoais' />
+            <Tab label='Vendas' />
           </Tabs>
         </Box>
       </div>
@@ -158,20 +189,30 @@ function Edit() {
                 <TabPanel value={tabValue} index={1}>
                   <PersonalInfo />
                 </TabPanel>
+                <TabPanel value={tabValue} index={2}>
+                  <SellerInfo />
+                </TabPanel>
               </div>
 
               <div className={classes.footerButtons}>
-                {tabValue === 0 ? (
-                  <Button color='primary' variant='contained' onClick={() => setTabValue(1)}>
-                    Próximo
-                  </Button>
-                ) : (
-                  <Button color='primary' variant='contained' onClick={() => setTabValue(0)}>
-                    Anterior
-                  </Button>
-                )}
                 <Button
-                  className={classes.saveButton}
+                  color='primary'
+                  variant='contained'
+                  onClick={() => setTabValue(tabValue - 1)}
+                  className={clsx(classes.Button, { [classes.hide]: tabValue === 0 })}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  color='primary'
+                  variant='contained'
+                  onClick={() => setTabValue(tabValue + 1)}
+                  className={clsx(classes.Button, { [classes.hide]: tabValue === 2 })}
+                >
+                  Próximo
+                </Button>
+                <Button
+                  className={classes.Button}
                   color='secondary'
                   variant='contained'
                   type='submit'
