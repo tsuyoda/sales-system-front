@@ -1,7 +1,6 @@
 import {
   AppBar,
   Badge,
-  Box,
   CssBaseline,
   Divider,
   Drawer,
@@ -19,7 +18,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import React, { useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useAuth } from '../../contexts/auth';
 import MenuRoutes from '../../routes/MenuRoutes';
@@ -30,6 +29,8 @@ function Home() {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const { signOut, user } = useAuth();
+
+  const history = useHistory();
 
   const handlerDrawerClose = () => {
     setOpen(false);
@@ -87,9 +88,14 @@ function Home() {
           </div>
           <Divider />
           <MenuItems />
-          <Box component='div' className={clsx({ [classes.hide]: !open, [classes.profileBox]: open })}>
-            <AccountCircleIcon className={classes.profileIcon} /> {user?.name}
-          </Box>
+          <List>
+            <ListItem button onClick={() => history.push('/profile')}>
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary={user?.name} />
+            </ListItem>
+          </List>
           <Divider />
           <List>
             <ListItem button onClick={handleSignOut}>
