@@ -11,11 +11,11 @@ import OrderFormSchema from './validations';
 import useStyles from './styles';
 import { INITIAL_FORM_VALUES } from '../../../constants/order';
 import { IOrderEditForm, IOrderItem } from '../../../interfaces/IOrder';
-import ClientInfo from '../SharedForms/ClientInfo/index';
-import Products from '../SharedForms/Products';
-import DeliveryInfo from '../SharedForms/DeliveryInfo/index';
-import Payment from '../SharedForms/Payment';
-import SellerInfo from '../SharedForms/SellerInfo';
+import ClientInfo from '../Forms/ClientInfo/index';
+import Products from '../Forms/Products';
+import DeliveryInfo from '../Forms/DeliveryInfo/index';
+import Payment from '../Forms/Payment';
+import SellerInfo from '../Forms/SellerInfo';
 import api from '../../../services/api';
 
 interface TabPanelProps {

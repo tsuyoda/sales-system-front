@@ -10,8 +10,8 @@ import ProductFormSchema from './validations';
 import useStyles from './styles';
 import { IProductEditForm } from '../../../interfaces/IProduct';
 import { INITIAL_FORM_VALUES } from '../../../constants/product';
-import ProductInfo from '../SharedForms/ProductInfo';
-import ProductSpecifications from '../SharedForms/ProductSpecifications';
+import ProductInfo from '../Forms/ProductInfo';
+import ProductSpecifications from '../Forms/ProductSpecifications';
 import api from '../../../services/api';
 
 interface TabPanelProps {

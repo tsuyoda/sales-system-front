@@ -9,7 +9,7 @@ import axios from 'axios';
 import ProviderFormSchema from './validations';
 import api from '../../../services/api';
 import useStyles from './styles';
-import PersonalInfo from '../SharedForms/PersonalInfo';
+import PersonalInfo from '../Forms/PersonalInfo';
 import { IProviderEditForm, IProvider } from '../../../interfaces/IProvider';
 import { INITIAL_FORM_VALUES } from '../../../constants/provider';
 

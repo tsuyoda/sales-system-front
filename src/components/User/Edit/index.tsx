@@ -12,9 +12,9 @@ import { INITIAL_FORM_VALUES } from '../../../constants/user';
 import { IUser, IUserRegisterForm } from '../../../interfaces/IUser';
 import api from '../../../services/api';
 import useStyles from './styles';
-import UserInfo from './UserInfo';
-import PersonalInfo from '../SharedForms/PersonalInfo';
-import SellerInfo from '../SharedForms/SellerInfo';
+import UserInfo from '../Forms/UserInfoEdit';
+import PersonalInfo from '../Forms/PersonalInfo';
+import SellerInfo from '../Forms/SellerInfo';
 
 interface TabPanelProps {
   children?: React.ReactNode;

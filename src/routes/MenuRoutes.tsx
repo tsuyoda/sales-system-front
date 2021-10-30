@@ -19,7 +19,7 @@ import Customer from '../components/Customer';
 import ProductEdit from '../components/Product/Edit';
 import CustomerEdit from '../components/Customer/Edit';
 import ProviderEdit from '../components/Provider/Edit';
-import HistoryPriceInfo from '../components/Product/SharedForms/HistoryPriceInfo';
+import HistoryPriceInfo from '../components/Product/Forms/HistoryPriceInfo';
 
 function MenuRoutes() {
   return (

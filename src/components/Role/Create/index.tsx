@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import RoleForm from '../SharedForms/RoleForm';
+import RoleForm from '../Forms/RoleForm';
 import RoleFormSchema from './validations';
 import { INITIAL_FORM_VALUES } from '../../../constants/role';
 import { IResource, IRoleEditForm } from '../../../interfaces/IRole';

@@ -9,8 +9,8 @@ import axios from 'axios';
 import CustomerFormSchema from './validations';
 import api from '../../../services/api';
 import useStyles from './styles';
-import PersonalInfo from '../SharedForms/PersonalInfo';
-import PointsProgramInfo from '../SharedForms/PointsProgramInfo';
+import PersonalInfo from '../Forms/PersonalInfo';
+import PointsProgramInfo from '../Forms/PointsProgramInfo';
 import { ICustomerEditForm } from '../../../interfaces/ICustomer';
 import { INITIAL_FORM_VALUES } from '../../../constants/customer';
 
