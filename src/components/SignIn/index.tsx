@@ -67,6 +67,9 @@ function SignIn() {
     <Container component='main' maxWidth='xs'>
       <CssBaseline>
         <div className={classes.main}>
+          <Typography variant='h3' component='h1' className={classes.title}>
+            Sales System
+          </Typography>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
