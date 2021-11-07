@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { validateCnpj, validateCpf } from '../../../utils/utiltsFunctions';
 
 const UserFormSchema = Yup.object({
   user_email: Yup.string().email('Insira um e-mail válido').required('Campo de e-mail é obrigatório'),
@@ -9,7 +10,7 @@ const UserFormSchema = Yup.object({
   user_password: Yup.string()
     .matches(
       /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-      'Senha não atende a todos os requisitos'
+      'Senha deve conter no mínimo 8 carecteres, uma letra maiúscula, um número e um caracter especial'
     )
     .required('Campo de senha é obrigatório'),
   user_role: Yup.object({
@@ -18,11 +19,17 @@ const UserFormSchema = Yup.object({
   user_doc_id: Yup.string()
     .when('user_doc_type', {
       is: 'F',
-      then: Yup.string().min(11, 'CPF inválido').required('Campo de CPF é obrigatório')
+      then: Yup.string()
+        .min(11, 'CPF inválido')
+        .test('valid-cpf', 'CPF inválido', value => (value ? validateCpf(value) : true))
+        .required('Campo de CPF é obrigatório')
     })
     .when('user_doc_type', {
       is: 'J',
-      then: Yup.string().min(14, 'CNPJ inválido').required('Campo de CNPJ é obrigatório')
+      then: Yup.string()
+        .min(14, 'CNPJ inválido')
+        .test('valid-cnpj', 'CNPJ inválido', value => (value ? validateCnpj(value) : true))
+        .required('Campo de CNPJ é obrigatório')
     }),
   user_full_name: Yup.string().min(3, 'Digite um nome válido').required('Campo obrigatório'),
   user_contact_email: Yup.string()

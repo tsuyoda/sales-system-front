@@ -1,14 +1,21 @@
 import * as Yup from 'yup';
+import { validateCnpj, validateCpf } from '../../../utils/utiltsFunctions';
 
 const ProviderFormSchema = Yup.object({
   provider_doc_id: Yup.string()
     .when('provider_doc_type', {
       is: 'F',
-      then: Yup.string().min(11, 'CPF inválido').required('Campo de CPF é obrigatório')
+      then: Yup.string()
+        .min(11, 'CPF inválido')
+        .test('valid-cpf', 'CPF inválido', value => (value ? validateCpf(value) : true))
+        .required('Campo de CPF é obrigatório')
     })
     .when('provider_doc_type', {
       is: 'J',
-      then: Yup.string().min(14, 'CNPJ inválido').required('Campo de CNPJ é obrigatório')
+      then: Yup.string()
+        .min(14, 'CNPJ inválido')
+        .test('valid-cnpj', 'CNPJ inválido', value => (value ? validateCnpj(value) : true))
+        .required('Campo de CNPJ é obrigatório')
     }),
   provider_full_name: Yup.string().min(3, 'Digite um nome válido').required('Campo obrigatório'),
   provider_contact_email: Yup.string()
