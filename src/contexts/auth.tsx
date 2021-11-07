@@ -27,7 +27,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
   }, []);
 
   const accessControl = async (action: string, resource: string): Promise<boolean> => {
-    const response = await api.get('user/my-profile');
+    const response = await api.get('/profile');
 
     const { data: userData } = response.data;
 
