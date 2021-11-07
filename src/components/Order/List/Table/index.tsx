@@ -77,6 +77,13 @@ function TableOrder({ filters, page, setPage, setUpdateRows, updateRows }: Table
     })();
   }, [page, limit, filters, updateRows]);
 
+  const statusDict: { [key: string]: string } = {
+    new: 'Novo',
+    pending: 'Pendente',
+    processed: 'Processado',
+    canceled: 'Cancelado'
+  };
+
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(parseInt(event.target.value, 10));
     setPage(0);
@@ -155,7 +162,7 @@ function TableOrder({ filters, page, setPage, setUpdateRows, updateRows }: Table
                 <TableCell align='left'>{row.customer.fullName}</TableCell>
                 <TableCell align='left'>{row.seller.user.fullName}</TableCell>
                 <TableCell align='left'>{`R$ ${row.value.total.toFixed(2)}`.replace('.', ',')}</TableCell>
-                <TableCell align='left'>{row.status}</TableCell>
+                <TableCell align='left'>{statusDict[row.status]}</TableCell>
                 <TableCell align='left'>{new Date(row.createdAt).toLocaleString()}</TableCell>
                 <TableCell align='right'>
                   <IconButton

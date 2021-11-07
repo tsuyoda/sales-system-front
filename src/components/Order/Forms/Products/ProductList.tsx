@@ -10,7 +10,7 @@ interface ProductListProps {
 
 function ProductList({ items, removeItem }: ProductListProps) {
   return (
-    <TableContainer>
+    <TableContainer style={{ maxHeight: 300 }}>
       <Table>
         <TableHead>
           <TableRow>

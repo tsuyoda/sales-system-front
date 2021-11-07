@@ -12,6 +12,7 @@ import { IOrderEditForm } from '../../../../interfaces/IOrder';
 import { IOption } from '../../../../interfaces/IForm';
 import api from '../../../../services/api';
 import Info from './Info';
+import { ICustomer } from '../../../../interfaces/ICustomer';
 
 const useStyles = makeStyles(theme => ({
   block: {
@@ -46,11 +47,18 @@ function ClientInfo() {
     }
   ];
 
-  const getCustomer = useCallback(async (config: AxiosRequestConfig) => {
+  const getCustomer = useCallback(async (config: AxiosRequestConfig): Promise<ICustomer> => {
     const { data: response } = await api.get('/customer', config);
     const [customerData] = response.data;
 
     return customerData;
+  }, []);
+
+  const getScoreByCustomer = useCallback(async (customerId: string) => {
+    const { data: response } = await api.get('/score', { params: { customer: customerId } });
+    const [scoreData] = response.data;
+
+    return scoreData;
   }, []);
 
   const handleSearchTypeChange = useCallback((event: ChangeEvent<HTMLInputElement>, value: IOption) => {
@@ -83,9 +91,17 @@ function ClientInfo() {
     if (customerData) {
       setFieldValue('order_customer', customerData);
       setFieldValue('order_customer_id', customerData._id);
+
+      if (customerData.participatePointsProgram) {
+        const scoreData = await getScoreByCustomer(customerData._id);
+
+        setFieldValue('order_customer_score', scoreData);
+      }
+
       setShowCreateMessage(false);
     } else {
       setFieldValue('order_customer', null);
+      setFieldValue('order_customer_score', null);
       setFieldValue('order_customer_id', '');
       setShowCreateMessage(true);
     }
