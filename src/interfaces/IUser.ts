@@ -1,4 +1,5 @@
 import { IOption } from './IForm';
+import { IPerson } from './IPerson';
 
 export interface IRole {
   _id: string;
@@ -6,10 +7,9 @@ export interface IRole {
   description: string;
 }
 
-export interface IUser {
+export interface IUser extends IPerson {
   _id: string;
   name: string;
-  fullName: string;
   email: string;
   role: IRole;
   isSeller: boolean;
