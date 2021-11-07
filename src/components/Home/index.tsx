@@ -14,23 +14,30 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import React, { useState } from 'react';
-import { BrowserRouter, useHistory } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useTheme } from '@material-ui/core/styles';
 import { useAuth } from '../../contexts/auth';
 import MenuRoutes from '../../routes/MenuRoutes';
 import MenuItems from '../MenuItems';
 import { useStyles } from './styles';
+import { useHeaderTitle } from '../../contexts/headerTitle';
+import { useColorMode } from '../../contexts/colorMode';
 
 function Home() {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const { signOut, user } = useAuth();
 
-  const history = useHistory();
+  const theme = useTheme();
+  const { title } = useHeaderTitle();
+  const { colorMode } = useColorMode();
 
   const handlerDrawerClose = () => {
     setOpen(false);
@@ -58,12 +65,15 @@ function Home() {
               <MenuIcon />
             </IconButton>
             <Typography variant='h6' component='h1' className={classes.title} noWrap>
-              Sales System
+              {title}
             </Typography>
             <IconButton>
               <Badge badgeContent={1} color='secondary'>
                 <NotificationsIcon />
               </Badge>
+            </IconButton>
+            <IconButton onClick={colorMode.toggleColorMode}>
+              {theme.palette.type === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -89,7 +99,7 @@ function Home() {
           <Divider />
           <MenuItems />
           <List>
-            <ListItem button onClick={() => history.push('/profile')}>
+            <ListItem button component={Link} to='/profile'>
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>

@@ -8,28 +8,21 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { AuthProvider } from './contexts/auth';
 import 'react-toastify/dist/ReactToastify.css';
 import Routes from './routes';
+import { HeaderTitleProvider } from './contexts/headerTitle';
+import { useColorMode } from './contexts/colorMode';
 
 function App() {
-  const theme = React.useMemo(
-    () =>
-      createTheme(
-        {
-          palette: {
-            type: 'dark'
-          }
-        },
-        ptPT
-      ),
-    undefined
-  );
+  const { theme } = useColorMode();
 
   return (
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
+          <HeaderTitleProvider>
+            <BrowserRouter>
+              <Routes />
+            </BrowserRouter>
+          </HeaderTitleProvider>
         </AuthProvider>
         <ToastContainer />
       </MuiPickersUtilsProvider>
