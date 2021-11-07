@@ -16,6 +16,8 @@ export const INITIAL_FORM_VALUES = {
   order_delivery_date: new Date(),
   order_payment_date: new Date(),
   order_value_total_items: 0,
+  order_value_delivery: 0,
+  order_seller_discount: 0,
   order_value_discount: 0,
   order_value_total: 0,
   order_payment_method: { label: '', value: '' }
