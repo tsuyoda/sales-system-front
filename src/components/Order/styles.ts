@@ -5,7 +5,8 @@ export const useStyles = makeStyles({
     marginBottom: 20
   },
   subtitle: {
-    color: 'gray'
+    color: 'gray',
+    height: 50
   },
   addButtonGrid: {
     display: 'flex',

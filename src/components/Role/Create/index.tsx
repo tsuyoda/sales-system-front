@@ -7,10 +7,17 @@ import RoleFormSchema from './validations';
 import { INITIAL_FORM_VALUES } from '../../../constants/role';
 import { IResource, IRoleEditForm } from '../../../interfaces/IRole';
 import api from '../../../services/api';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 function Register() {
   const [resources, setResources] = useState<IResource[]>([]);
   const history = useHistory();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Criação de função');
+  }, []);
 
   useEffect(() => {
     api.get('/resource', { params: { limit: 100 } }).then(response => {

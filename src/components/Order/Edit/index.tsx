@@ -1,10 +1,9 @@
-import { Box, Button, IconButton, Tab, Tabs } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import { Formik, FormikProps, Form } from 'formik';
 import React, { useCallback, useEffect, useState } from 'react';
 import SaveIcon from '@material-ui/icons/Save';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useHistory, useParams } from 'react-router-dom';
-import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import OrderFormSchema from './validations';
@@ -17,35 +16,22 @@ import DeliveryInfo from '../Forms/DeliveryInfo/index';
 import Payment from '../Forms/Payment';
 import SellerInfo from '../Forms/SellerInfo';
 import api from '../../../services/api';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel({ children, value, index, ...props }: TabPanelProps) {
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...props}
-    >
-      {value === index && <>{children}</>}
-    </div>
-  );
-}
+import { useHeaderTitle } from '../../../contexts/headerTitle';
+import PointsProgram from '../Forms/PointsProgram';
 
 function Edit() {
   const classes = useStyles();
-  const [tabValue, setTabValue] = useState(0);
   const [orderInfo, setOrderInfo] = useState<IOrderEditForm>(INITIAL_FORM_VALUES);
   const [loading, setLoading] = useState(true);
   const { id } = useParams<{ id: string }>();
 
   const history = useHistory();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Edição de pedido');
+  }, []);
 
   const paymentTypes: { [key: string]: string } = {
     credit_card: 'Cartão de Crédito',
@@ -60,6 +46,9 @@ function Edit() {
 
       const customerResponse = await api.get(`/customer/${order.customer._id}`);
       const { data: customer } = customerResponse.data;
+
+      const { data: scoreResponse } = await api.get('/score', { params: { customer: customer._id } });
+      const [score] = scoreResponse.data;
 
       const sellerResponse = await api.get(`/seller/${order.seller._id}`);
       const { data: seller } = sellerResponse.data;
@@ -79,6 +68,7 @@ function Edit() {
       const values: IOrderEditForm = {
         order_search_customer_type: { label: 'CPF', value: 'customer_doc_f' },
         order_search_customer_value: '',
+        order_customer_score: score,
         order_customer: customer,
         order_customer_id: customer._id,
         order_seller: { label: seller.user.name, value: seller._id },
@@ -88,8 +78,10 @@ function Edit() {
         order_payment_date: new Date(order.date.payment),
         order_comments: '',
         order_value_total_items: order.value.totalItems,
-        order_value_discount: order.discountPercentage * 100 || 0,
-        order_insert_discount: order.discountPercentage * 100,
+        order_value_delivery: order.value.delivery,
+        order_seller_discount: order.discountPercentage * 100 || 0,
+        order_value_discount: order.value.totalDiscount,
+        order_discount_field: order.discountPercentage * 100 || 0,
         order_value_total: order.value.total,
         order_payment_method: { label: paymentTypes[order.paymentType], value: order.paymentType }
       };
@@ -97,10 +89,6 @@ function Edit() {
       setOrderInfo(values);
       setLoading(false);
     })();
-  }, []);
-
-  const handleTabChange = useCallback((event, value) => {
-    setTabValue(value);
   }, []);
 
   const handleOnSubmit = useCallback(async (values: IOrderEditForm, actions) => {
@@ -150,15 +138,6 @@ function Edit() {
         <IconButton onClick={() => history.goBack()}>
           <KeyboardBackspaceIcon />
         </IconButton>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabValue} onChange={handleTabChange} centered>
-            <Tab label='Dados do cliente' />
-            <Tab label='Vendedor' />
-            <Tab label='Produtos' />
-            <Tab label='Entrega' />
-            <Tab label='Pagamento' />
-          </Tabs>
-        </Box>
       </div>
       <div className={classes.content}>
         <Formik initialValues={orderInfo} validationSchema={OrderFormSchema} onSubmit={handleOnSubmit}>
@@ -166,40 +145,27 @@ function Edit() {
             return (
               <Form>
                 <div className={classes.formContainer}>
-                  <TabPanel value={tabValue} index={0}>
+                  <div className={classes.block}>
                     <ClientInfo />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={1}>
+                  </div>
+                  <div className={classes.block}>
                     <SellerInfo />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={2}>
+                  </div>
+                  <div className={classes.block}>
                     <Products />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={3}>
+                  </div>
+                  <div className={classes.block}>
                     <DeliveryInfo />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={4}>
+                  </div>
+                  <div className={classes.block}>
                     <Payment />
-                  </TabPanel>
+                  </div>
+                  <div className={classes.block}>
+                    <PointsProgram />
+                  </div>
                 </div>
 
                 <div className={classes.footerButtons}>
-                  <Button
-                    color='primary'
-                    variant='contained'
-                    onClick={() => setTabValue(tabValue - 1)}
-                    className={clsx(classes.Button, { [classes.hide]: tabValue === 0 })}
-                  >
-                    Anterior
-                  </Button>
-                  <Button
-                    color='primary'
-                    variant='contained'
-                    onClick={() => setTabValue(tabValue + 1)}
-                    className={clsx(classes.Button, { [classes.hide]: tabValue === 4 })}
-                  >
-                    Próximo
-                  </Button>
                   <Button
                     className={classes.Button}
                     color='secondary'

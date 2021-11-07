@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, Tab, Tabs } from '@material-ui/core';
 import { Formik, FormikProps, Form } from 'formik';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SaveIcon from '@material-ui/icons/Save';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { toast } from 'react-toastify';
@@ -15,6 +15,7 @@ import useStyles from './styles';
 import UserInfo from '../Forms/UserInfoCreate';
 import PersonalInfo from '../Forms/PersonalInfo';
 import SellerInfo from '../Forms/SellerInfo/index';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -39,6 +40,12 @@ function TabPanel({ children, value, index, ...props }: TabPanelProps) {
 function Register() {
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Cadastro de usuário');
+  }, []);
 
   const history = useHistory();
 

@@ -20,7 +20,7 @@ export const useStyles = makeStyles(theme => ({
     padding: '40px 15px 0 15px'
   },
   block: {
-    marginBottom: 10
+    marginBottom: 50
   },
   footerButtons: {
     display: 'flex',

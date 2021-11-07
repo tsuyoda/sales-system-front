@@ -1,6 +1,6 @@
 import { Typography, Grid, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import TableProvider from './List/Table';
@@ -8,6 +8,7 @@ import { useStyles } from './styles';
 import Filter from './List/Filter';
 import { useAuth } from '../../contexts/auth';
 import { IProviderFilterParams } from '../../interfaces/IProvider';
+import { useHeaderTitle } from '../../contexts/headerTitle';
 
 function Provider() {
   const classes = useStyles();
@@ -18,6 +19,11 @@ function Provider() {
   const history = useHistory();
 
   const { permissions } = useAuth();
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Fornecedores');
+  }, []);
 
   const handleCreateButton = () => {
     history.push('/provider/register');
@@ -27,11 +33,8 @@ function Provider() {
     <>
       <Grid container className={classes.header}>
         <Grid item xs={12} md={11}>
-          <Typography paragraph variant='h5' component='h1'>
-            Fornecedores
-            <Typography variant='subtitle1' className={classes.subtitle}>
-              Gerencie os fornecedores de produto do sistema
-            </Typography>
+          <Typography variant='subtitle1' className={classes.subtitle}>
+            Gerencie os fornecedores de produto do sistema
           </Typography>
         </Grid>
         <Grid item xs={12} md={1} className={classes.addButtonGrid}>

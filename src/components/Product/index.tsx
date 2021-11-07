@@ -1,6 +1,6 @@
 import { Typography, Grid, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import TableProduct from './List/Table';
@@ -8,6 +8,7 @@ import { useStyles } from './styles';
 import Filter from './List/Filter';
 import { useAuth } from '../../contexts/auth';
 import { IProductFilterParams } from '../../interfaces/IProduct';
+import { useHeaderTitle } from '../../contexts/headerTitle';
 
 function Product() {
   const classes = useStyles();
@@ -16,6 +17,11 @@ function Product() {
   const [updateRows, setUpdateRows] = useState(true);
 
   const history = useHistory();
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Produtos');
+  }, []);
 
   const { permissions } = useAuth();
 
@@ -27,11 +33,8 @@ function Product() {
     <>
       <Grid container className={classes.header}>
         <Grid item xs={12} md={11}>
-          <Typography paragraph variant='h5' component='h1'>
-            Produtos
-            <Typography variant='subtitle1' className={classes.subtitle}>
-              Gerencie os produtos do sistema
-            </Typography>
+          <Typography variant='subtitle1' className={classes.subtitle}>
+            Gerencie os produtos do sistema
           </Typography>
         </Grid>
         <Grid item xs={12} md={1} className={classes.addButtonGrid}>

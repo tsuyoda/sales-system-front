@@ -12,6 +12,7 @@ import useStyles from './styles';
 import PersonalInfo from '../Forms/PersonalInfo';
 import { IProviderEditForm, IProvider } from '../../../interfaces/IProvider';
 import { INITIAL_FORM_VALUES } from '../../../constants/provider';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,6 +42,12 @@ function Register() {
   const { id } = useParams<{ id: string }>();
 
   const history = useHistory();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Edição de fornecedor');
+  }, []);
 
   useEffect(() => {
     api.get(`/provider/${id}`).then(async response => {

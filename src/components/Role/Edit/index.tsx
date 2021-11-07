@@ -7,6 +7,7 @@ import RoleFormSchema from './validations';
 import { INITIAL_FORM_VALUES } from '../../../constants/role';
 import { IResource, IRoleEditForm, IPermission } from '../../../interfaces/IRole';
 import api from '../../../services/api';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 function Edit() {
   const [resources, setResources] = useState<IResource[]>([]);
@@ -15,6 +16,12 @@ function Edit() {
   const [loading, setLoading] = useState(true);
 
   const { id } = useParams<{ id: string }>();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Edição de função');
+  }, []);
 
   useEffect(() => {
     (async () => {

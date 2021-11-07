@@ -1,10 +1,9 @@
-import { Box, Button, IconButton, Tab, Tabs } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import { Formik, FormikProps, Form } from 'formik';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import SaveIcon from '@material-ui/icons/Save';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useHistory } from 'react-router-dom';
-import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import OrderFormSchema from './validations';
@@ -17,48 +16,32 @@ import DeliveryInfo from '../Forms/DeliveryInfo/index';
 import Payment from '../Forms/Payment';
 import SellerInfo from '../Forms/SellerInfo';
 import api from '../../../services/api';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel({ children, value, index, ...props }: TabPanelProps) {
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...props}
-    >
-      {value === index && <>{children}</>}
-    </div>
-  );
-}
+import { useHeaderTitle } from '../../../contexts/headerTitle';
+import PointsProgram from '../Forms/PointsProgram/index';
+import { ISeller } from '../../../interfaces/ISeller';
 
 function Register() {
   const classes = useStyles();
-  const [tabValue, setTabValue] = useState(0);
 
   const history = useHistory();
 
-  const handleTabChange = useCallback((event, value) => {
-    setTabValue(value);
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Cadastro de pedido');
   }, []);
 
   const handleOnSubmit = useCallback(async (values: IOrderEditForm, actions) => {
     const orderPayload = {
-      status: 'Processado',
       seller: values.order_seller.value,
       customer: values.order_customer_id,
       value: {
         totalItems: values.order_value_total_items,
-        totalDiscount: (values.order_value_total_items * values.order_value_discount) / 100,
+        totalDiscount: values.order_value_discount,
+        delivery: values.order_value_delivery,
         total: values.order_value_total
       },
-      discountPercentage: values.order_value_discount / 100,
+      discountPercentage: values.order_seller_discount / 100,
       paymentType: values.order_payment_method.value,
       date: {
         delivery: values.order_delivery_date.toISOString(),
@@ -97,15 +80,6 @@ function Register() {
         <IconButton onClick={() => history.goBack()}>
           <KeyboardBackspaceIcon />
         </IconButton>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabValue} onChange={handleTabChange} centered>
-            <Tab label='Dados do cliente' />
-            <Tab label='Vendedor' />
-            <Tab label='Produtos' />
-            <Tab label='Entrega' />
-            <Tab label='Pagamento' />
-          </Tabs>
-        </Box>
       </div>
       <div className={classes.content}>
         <Formik initialValues={INITIAL_FORM_VALUES} validationSchema={OrderFormSchema} onSubmit={handleOnSubmit}>
@@ -113,40 +87,27 @@ function Register() {
             return (
               <Form>
                 <div className={classes.formContainer}>
-                  <TabPanel value={tabValue} index={0}>
+                  <div className={classes.block}>
                     <ClientInfo />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={1}>
+                  </div>
+                  <div className={classes.block}>
                     <SellerInfo />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={2}>
+                  </div>
+                  <div className={classes.block}>
                     <Products />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={3}>
+                  </div>
+                  <div className={classes.block}>
                     <DeliveryInfo />
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={4}>
+                  </div>
+                  <div className={classes.block}>
                     <Payment />
-                  </TabPanel>
+                  </div>
+                  <div className={classes.block}>
+                    <PointsProgram />
+                  </div>
                 </div>
 
                 <div className={classes.footerButtons}>
-                  <Button
-                    color='primary'
-                    variant='contained'
-                    onClick={() => setTabValue(tabValue - 1)}
-                    className={clsx(classes.Button, { [classes.hide]: tabValue === 0 })}
-                  >
-                    Anterior
-                  </Button>
-                  <Button
-                    color='primary'
-                    variant='contained'
-                    onClick={() => setTabValue(tabValue + 1)}
-                    className={clsx(classes.Button, { [classes.hide]: tabValue === 4 })}
-                  >
-                    Próximo
-                  </Button>
                   <Button
                     className={classes.Button}
                     color='secondary'

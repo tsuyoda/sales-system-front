@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, Tab, Tabs } from '@material-ui/core';
 import { Formik, FormikProps, Form } from 'formik';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SaveIcon from '@material-ui/icons/Save';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { toast } from 'react-toastify';
@@ -12,6 +12,7 @@ import useStyles from './styles';
 import PersonalInfo from '../Forms/PersonalInfo';
 import { IProviderEditForm } from '../../../interfaces/IProvider';
 import { INITIAL_FORM_VALUES } from '../../../constants/provider';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -38,6 +39,12 @@ function Register() {
   const [tabValue, setTabValue] = useState(0);
 
   const history = useHistory();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Cadastro de fornecedor');
+  }, []);
 
   const handleTabChange = useCallback((event, value) => {
     setTabValue(value);

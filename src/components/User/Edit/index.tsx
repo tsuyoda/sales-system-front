@@ -15,6 +15,7 @@ import useStyles from './styles';
 import UserInfo from '../Forms/UserInfoEdit';
 import PersonalInfo from '../Forms/PersonalInfo';
 import SellerInfo from '../Forms/SellerInfo';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -50,6 +51,12 @@ function Edit() {
   const { id } = useParams<RouteParams>();
 
   const history = useHistory();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Edição de usuário');
+  }, []);
 
   const handleTabChange = useCallback((event, value) => {
     setTabValue(value);

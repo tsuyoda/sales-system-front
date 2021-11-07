@@ -13,6 +13,7 @@ import PersonalInfo from '../Forms/PersonalInfo';
 import PointsProgramInfo from '../Forms/PointsProgramInfo';
 import { ICustomerEditForm, ICustomer } from '../../../interfaces/ICustomer';
 import { INITIAL_FORM_VALUES } from '../../../constants/customer';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,6 +43,12 @@ function Register() {
   const { id } = useParams<{ id: string }>();
 
   const history = useHistory();
+
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Edição de cliente');
+  }, []);
 
   useEffect(() => {
     api.get(`/customer/${id}`).then(async response => {

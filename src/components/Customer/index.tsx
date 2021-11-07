@@ -1,6 +1,6 @@
 import { Typography, Grid, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import TableCustomer from './List/Table';
@@ -8,6 +8,7 @@ import { useStyles } from './styles';
 import Filter from './List/Filter';
 import { useAuth } from '../../contexts/auth';
 import { IUserFilterParams } from '../../interfaces/IUser';
+import { useHeaderTitle } from '../../contexts/headerTitle';
 
 function Customer() {
   const classes = useStyles();
@@ -18,6 +19,11 @@ function Customer() {
   const history = useHistory();
 
   const { permissions } = useAuth();
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Clientes');
+  }, []);
 
   const handleCreateButton = () => {
     history.push('/customer/register');
@@ -27,11 +33,8 @@ function Customer() {
     <>
       <Grid container className={classes.header}>
         <Grid item xs={12} md={11}>
-          <Typography paragraph variant='h5' component='h1'>
-            Clientes
-            <Typography variant='subtitle1' className={classes.subtitle}>
-              Gerencie os clientes do sistema
-            </Typography>
+          <Typography variant='subtitle1' className={classes.subtitle}>
+            Gerencie os clientes do sistema
           </Typography>
         </Grid>
         <Grid item xs={12} md={1} className={classes.addButtonGrid}>

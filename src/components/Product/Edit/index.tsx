@@ -13,6 +13,7 @@ import { INITIAL_FORM_VALUES } from '../../../constants/product';
 import ProductInfo from '../Forms/ProductInfo';
 import ProductSpecifications from '../Forms/ProductSpecifications';
 import api from '../../../services/api';
+import { useHeaderTitle } from '../../../contexts/headerTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,6 +43,11 @@ function Edit() {
   const { id } = useParams<{ id: string }>();
 
   const history = useHistory();
+  const { setTitle } = useHeaderTitle();
+
+  useEffect(() => {
+    setTitle('Edição de produto');
+  }, []);
 
   const measurementUnitTypes: { [key: string]: string } = {
     'kg': 'Quilograma',
