@@ -10,12 +10,17 @@ function sleep(delay = 0) {
   });
 }
 
+type getOptionsType = (config: AxiosRequestConfig) => Promise<IOption[]>;
+
 interface SingleSelectFormFieldProps {
-  sort: string;
-  limit: number;
-  options: IOption[];
-  textFieldProps: BaseTextFieldProps;
-  getOptions(config: AxiosRequestConfig): Promise<IOption[]>;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  value: IOption;
+  sort?: string;
+  limit?: number;
+  options?: IOption[];
+  textFieldProps?: BaseTextFieldProps;
+  getOptions?: getOptionsType;
 }
 
 function SingleSelectFormField({

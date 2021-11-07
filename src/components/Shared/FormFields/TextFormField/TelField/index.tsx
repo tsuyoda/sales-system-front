@@ -31,6 +31,7 @@ function TelField({ onBlur, onChange, onFocus, value, ...props }: TelFieldProps)
       onChange={handleChange}
       onFocus={onFocus}
       value={value}
+      disabled={props.disabled}
     >
       {() => <TextField type='tel' {...props} />}
     </InputMask>

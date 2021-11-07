@@ -20,6 +20,7 @@ function TextFormField({ mask, onBlur, onChange, onFocus, value, type, ...props 
         onChange={onChange}
         onFocus={onFocus}
         value={value}
+        disabled={props.disabled}
       >
         {() => <TextField type={type} {...props} />}
       </InputMask>

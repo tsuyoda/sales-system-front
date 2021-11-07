@@ -21,10 +21,10 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 25
+    fontSize: 18
   },
   subTitle: {
-    fontSize: 15
+    fontSize: 12
   }
 }));
 
