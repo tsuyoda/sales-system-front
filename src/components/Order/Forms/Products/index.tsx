@@ -82,7 +82,11 @@ function Products() {
     } else {
       items.push({
         quantity: values.order_insert_product_quantity || 0,
-        product: productData
+        product: productData,
+        value: {
+          unitary: productData.value,
+          subtotal: productData.value * (values.order_insert_product_quantity || 0)
+        }
       });
     }
 

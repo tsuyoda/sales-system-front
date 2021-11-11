@@ -26,7 +26,9 @@ function RoleForm({ resources }: RoleFormProps) {
       create: 'CRIAR',
       read: 'VISUALIZAR',
       update: 'EDITAR',
-      delete: 'DELETAR'
+      delete: 'DELETAR',
+      interact: 'INTERAGIR',
+      notification: 'NOTIFICAÇÃO'
     };
 
     return actionDict[action] || action;

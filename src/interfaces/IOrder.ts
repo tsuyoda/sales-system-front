@@ -10,6 +10,12 @@ export interface IOrderFilter {
   order_seller: IOption;
 }
 
+export interface IOrderRequestFilter {
+  request_order_cod?: string;
+  request_status: IOption;
+  request_order_seller: IOption;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOrderEditForm {
   order_search_customer_type: IOption;
@@ -51,7 +57,26 @@ export interface IOrder {
   status: string;
   customer: ICustomer;
   seller: ISeller;
+  items: IOrderItem[];
+  issuedInvoice: boolean;
   createdAt: string;
+}
+
+export interface IOrderRequest {
+  _id: string;
+  status: string;
+  order: IOrder;
+  createdAt: string;
+}
+
+export interface IOrderRequestFilterParams {
+  orderCod?: string;
+  seller?: string;
+  order?: string;
+  status?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
 }
 
 export interface IOrderFilterParams {
@@ -66,4 +91,8 @@ export interface IOrderFilterParams {
 export interface IOrderItem {
   quantity: number;
   product: IProduct;
+  value: {
+    unitary: number;
+    subtotal: number;
+  };
 }

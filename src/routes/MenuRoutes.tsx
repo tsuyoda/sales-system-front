@@ -29,6 +29,11 @@ import ProviderEdit from '../components/Provider/Edit';
 import HistoryPriceInfo from '../components/Product/Forms/HistoryPriceInfo';
 import Profile from '../components/Profile';
 import ResetPassword from '../components/Profile/ResetPassword';
+import Invoice from '../components/Invoice';
+import VisualizeInvoice from '../components/Invoice/Visualize';
+import VisualizeOrder from '../components/Order/Visualize/index';
+import Notification from '../components/Notification';
+import OrderManagemement from '../components/OrderManagement/index';
 
 function MenuRoutes() {
   return (
@@ -46,7 +51,9 @@ function MenuRoutes() {
       <Route path='/role/:id/edit' component={RoleEdit} />
       <Route path='/role' component={Role} />
       <Route path='/order/register' component={OrderRegister} />
+      <Route path='/order/request' component={OrderManagemement} />
       <Route path='/order/:id/edit' component={OrderEdit} />
+      <Route path='/order/:id' component={VisualizeOrder} />
       <Route path='/order' component={Order} />
       <Route path='/provider/register' component={ProviderRegister} />
       <Route path='/provider/:id/edit' component={ProviderEdit} />
@@ -61,6 +68,9 @@ function MenuRoutes() {
       <Route path='/score-level/:id/edit' component={ScoreLevelEdit} />
       <Route path='/score-level' component={ScoreLevel} />
       <Route path='/score' component={Score} />
+      <Route path='/invoice/:id' component={VisualizeInvoice} />
+      <Route path='/invoice' component={Invoice} />
+      <Route path='/notification' component={Notification} />
       <Route path='/' component={Dashboard} />
     </Switch>
   );

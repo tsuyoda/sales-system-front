@@ -1,3 +1,5 @@
+import { Socket } from 'socket.io-client';
+
 export interface IUser {
   id: string;
   name: string;
@@ -16,6 +18,7 @@ export interface IAuthPermissions {
 }
 
 export interface IAuthContextData {
+  socket: Socket | null;
   user: IUser | null;
   loadingPermissions: boolean;
   permissions: any;

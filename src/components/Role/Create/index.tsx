@@ -29,13 +29,18 @@ function Register() {
 
   const roleMapper = useCallback(
     (values: IRoleEditForm) => {
+      console.log(values.resources);
       const permissions = values.resources
-        .map((resource, rIndex) => ({
-          resource: resources[rIndex]?._id,
-          actions: resource.actions
-            .map((action, aIndex) => action && resources[rIndex]?.availableActions[aIndex])
-            .filter(value => !!value)
-        }))
+        .map((resource, rIndex) =>
+          resource
+            ? {
+                resource: resources[rIndex]?._id,
+                actions: resource.actions
+                  .map((action, aIndex) => action && resources[rIndex]?.availableActions[aIndex])
+                  .filter(value => !!value)
+              }
+            : null
+        )
         .filter(resource => !!resource);
 
       return {
@@ -49,6 +54,7 @@ function Register() {
   const handleOnSubmit = useCallback(
     (values, actions) => {
       const rolePayload = roleMapper(values);
+      console.log(rolePayload);
 
       api
         .post('/role', rolePayload)

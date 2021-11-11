@@ -22,13 +22,15 @@ import {
 import ReactLoading from 'react-loading';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
+import axios from 'axios';
 import { useStyles } from './styles';
 import api from '../../../../services/api';
 import { useAuth } from '../../../../contexts/auth';
@@ -77,11 +79,11 @@ function TableOrder({ filters, page, setPage, setUpdateRows, updateRows }: Table
     })();
   }, [page, limit, filters, updateRows]);
 
-  const statusDict: { [key: string]: string } = {
-    new: 'Novo',
-    pending: 'Pendente',
-    processed: 'Processado',
-    canceled: 'Cancelado'
+  const statusDict: { [key: string]: ReactElement } = {
+    new: <span className={classes.newContained}>Novo</span>,
+    pending: <span className={classes.pendingContained}>Pendente</span>,
+    processed: <span className={classes.processContained}>Processado</span>,
+    canceled: <span className={classes.canceledContained}>Cancelado</span>
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +136,37 @@ function TableOrder({ filters, page, setPage, setUpdateRows, updateRows }: Table
       });
   };
 
+  const handleVisualizeInvoiceClick = () => {
+    api.get('/invoice', { params: { orderCod: currentOrder?.cod } }).then(response => {
+      const [invoice] = response.data.data;
+
+      history.push(`/invoice/${invoice._id}`);
+    });
+  };
+
+  const handleVisualizeOrderClick = () => {
+    history.push(`/order/${currentOrder?._id}`);
+  };
+
+  const handleIssueInvoiceClick = async () => {
+    try {
+      await api.post(`/order/${currentOrder?._id}/generate-invoice`);
+      toast.success('Nota fiscal emitida com sucesso');
+
+      const response = await api.get('/invoice', { params: { orderCod: currentOrder?.cod } });
+
+      const [invoice] = response.data.data;
+
+      history.push(`/invoice/${invoice._id}`);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        toast.error(`Falha na emissão da nota fiscal: ${err.response?.data.error}`);
+      } else {
+        toast.error(`Falha na emissão da nota fiscal`);
+      }
+    }
+  };
+
   return loading ? (
     <div className={classes.loading}>
       <ReactLoading type='cylon' />
@@ -177,15 +210,30 @@ function TableOrder({ filters, page, setPage, setUpdateRows, updateRows }: Table
           </TableBody>
           <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={handleActionsClose}>
             <MenuItem
-              onClick={() => {
-                // eslint-disable-next-line no-alert
-                alert('Emissão Nota Fiscal');
-              }}
+              onClick={handleVisualizeInvoiceClick}
+              className={clsx({ [classes.hide]: !currentOrder?.issuedInvoice })}
             >
               <ListItemIcon>
-                <FontAwesomeIcon icon={faFileInvoice} size='sm' style={{ marginLeft: 5 }} />
+                <FontAwesomeIcon icon={faFileInvoice} size='sm' />
+              </ListItemIcon>
+              <ListItemText primary='Visualizar Nota Fiscal' />
+            </MenuItem>
+            <MenuItem
+              onClick={handleIssueInvoiceClick}
+              className={clsx({
+                [classes.hide]: !!currentOrder?.issuedInvoice || currentOrder?.status !== 'processed'
+              })}
+            >
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faFileInvoice} size='sm' />
               </ListItemIcon>
               <ListItemText primary='Emitir Nota Fiscal' />
+            </MenuItem>
+            <MenuItem onClick={handleVisualizeOrderClick}>
+              <ListItemIcon>
+                <VisibilityIcon />
+              </ListItemIcon>
+              <ListItemText primary='Visualizar Pedido' />
             </MenuItem>
             <MenuItem onClick={handleEditClick} className={clsx({ [classes.hide]: !permissions?.orders?.update })}>
               <ListItemIcon>

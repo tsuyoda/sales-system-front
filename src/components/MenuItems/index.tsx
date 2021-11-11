@@ -1,7 +1,6 @@
 import { Collapse, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';

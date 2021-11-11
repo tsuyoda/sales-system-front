@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Badge,
   CssBaseline,
   Divider,
   Drawer,
@@ -16,7 +15,6 @@ import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import React, { useState } from 'react';
@@ -29,6 +27,7 @@ import MenuItems from '../MenuItems';
 import { useStyles } from './styles';
 import { useHeaderTitle } from '../../contexts/headerTitle';
 import { useColorMode } from '../../contexts/colorMode';
+import NotificationAppBar from '../Notification/AppBar';
 
 function Home() {
   const classes = useStyles();
@@ -67,11 +66,7 @@ function Home() {
             <Typography variant='h6' component='h1' className={classes.title} noWrap>
               {title}
             </Typography>
-            <IconButton>
-              <Badge badgeContent={1} color='secondary'>
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <NotificationAppBar />
             <IconButton onClick={colorMode.toggleColorMode}>
               {theme.palette.type === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>

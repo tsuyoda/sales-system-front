@@ -18,7 +18,6 @@ import SellerInfo from '../Forms/SellerInfo';
 import api from '../../../services/api';
 import { useHeaderTitle } from '../../../contexts/headerTitle';
 import PointsProgram from '../Forms/PointsProgram/index';
-import { ISeller } from '../../../interfaces/ISeller';
 
 function Register() {
   const classes = useStyles();

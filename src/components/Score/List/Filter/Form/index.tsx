@@ -3,7 +3,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { Field, Form as FormFormik, useFormikContext } from 'formik';
 import React, { ChangeEvent, useCallback } from 'react';
 import { useStyles } from './styles';
-import TextFormField from '../../../../Shared/FormFields/TextFormField';
 import SingleSelectFormField from '../../../../Shared/FormFields/SingleSelectFormField';
 import { IOption } from '../../../../../interfaces/IForm';
 import { IScoreFilterForm } from '../../../../../interfaces/IScore';
@@ -11,12 +10,11 @@ import { INITIAL_FILTER_VALUES } from '../../../../../constants/score';
 import api from '../../../../../services/api';
 import { IScoreLevel } from '../../../../../interfaces/IScoreLevel';
 import { ICustomer } from '../../../../../interfaces/ICustomer';
-import { formatDoc } from '../../../../../utils/utiltsFunctions';
 
 function Form() {
   const classes = useStyles();
 
-  const { values, setFieldValue, resetForm, isValid, isSubmitting, touched, errors, setFieldTouched } =
+  const { values, setFieldValue, resetForm, isValid, isSubmitting, setFieldTouched } =
     useFormikContext<IScoreFilterForm>();
 
   const getScoreLevels = useCallback(async () => {

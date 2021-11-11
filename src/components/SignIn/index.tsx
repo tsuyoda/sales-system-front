@@ -16,6 +16,7 @@ import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import { useAuth } from '../../contexts/auth';
 import { useStyles } from './styles';
+import logo from '../../assets/logo.png';
 
 function SignIn() {
   const classes = useStyles();
@@ -67,9 +68,7 @@ function SignIn() {
     <Container component='main' maxWidth='xs'>
       <CssBaseline>
         <div className={classes.main}>
-          <Typography variant='h3' component='h1' className={classes.title}>
-            Sales System
-          </Typography>
+          <img src={logo} alt='Sales System' width={300} height={200} className={classes.logo} />
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>

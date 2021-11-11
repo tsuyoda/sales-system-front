@@ -1,0 +1,28 @@
+#document_invoice table {
+  border: 1px solid black;
+}
+
+#document_invoice th {
+  border: 1px solid black;
+}
+
+#document_invoice td {
+  border: 1px solid black;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #document_invoice,
+  #document_invoice * {
+    visibility: visible;
+  }
+
+  #document_invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}

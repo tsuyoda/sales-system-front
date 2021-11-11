@@ -23,6 +23,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ThumbsUpDownIcon from '@material-ui/icons/ThumbsUpDown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -48,6 +50,12 @@ function getIconByAction(action: string, key: string) {
 
     case 'delete':
       return <DeleteIcon fontSize='small' titleAccess='Deletar' key={`DeleteIcon.${key}`} />;
+
+    case 'interact':
+      return <ThumbsUpDownIcon fontSize='small' titleAccess='Interagir' key={`ThumbsUpDownIcon.${key}`} />;
+
+    case 'notification':
+      return <NotificationsIcon fontSize='small' titleAccess='Notificação' key={`NotificationIcon.${key}`} />;
 
     default:
       return null;

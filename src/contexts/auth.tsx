@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { toast } from 'react-toastify';
+import io, { Socket } from 'socket.io-client';
 import { IAuthContextData, IAuthProviderProps, IUser, IUserLogin } from '../interfaces/IAuth';
 import { IPermission, IResource } from '../interfaces/IRole';
 
@@ -9,6 +10,7 @@ const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 function AuthProvider({ children }: IAuthProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [permissions, setPermissions] = useState<any | null>();
   const [loadingPermissions, setLoadingPermissions] = useState(false);
@@ -19,11 +21,23 @@ function AuthProvider({ children }: IAuthProviderProps) {
     const storedToken = sessionStorage.getItem('@SalesSystem:token');
 
     if (storedUser && storedToken) {
+      console.log('render');
+      if (socket?.connected) socket.disconnect();
+      setSocket(
+        io('http://localhost:7777', {
+          query: { token: storedToken }
+        })
+      );
+
       setUser(storedUser);
       api.defaults.headers.Authorization = `Bearer ${storedToken}`;
     }
 
     setLoading(false);
+
+    return () => {
+      if (socket) socket.disconnect();
+    };
   }, []);
 
   const accessControl = async (action: string, resource: string): Promise<boolean> => {
@@ -53,7 +67,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
 
     setLoadingPermissions(true);
 
-    api.get(`/resource`).then(response => {
+    api.get(`/resource`, { params: { limit: 1000 } }).then(response => {
       const { data: resources } = response.data;
 
       const permissionsPromises = resources.map(async (resource: IResource) => {
@@ -70,6 +84,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       Promise.all(permissionsPromises).then((grants: any[]) => {
+        console.log(Object.fromEntries(grants));
         setPermissions(Object.fromEntries(grants));
         setLoadingPermissions(false);
       });
@@ -86,6 +101,13 @@ function AuthProvider({ children }: IAuthProviderProps) {
 
     api.defaults.headers.Authorization = `Bearer ${data.token}`;
     setUser(data.user);
+
+    if (socket?.connected) socket.disconnect();
+    setSocket(
+      io('http://localhost:7777', {
+        query: { token: data.token }
+      })
+    );
   };
 
   const signOut = () => {
@@ -105,7 +127,9 @@ function AuthProvider({ children }: IAuthProviderProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, signed, accessControl, loadingPermissions, permissions }}>
+    <AuthContext.Provider
+      value={{ user, socket, signIn, signOut, signed, accessControl, loadingPermissions, permissions }}
+    >
       {loading ? null : children}
     </AuthContext.Provider>
   );

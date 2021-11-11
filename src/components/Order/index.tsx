@@ -30,6 +30,10 @@ function Order() {
     history.push('/order/register');
   };
 
+  const handleRequestsButton = () => {
+    history.push('/order/request');
+  };
+
   return (
     <>
       <Grid container spacing={4} className={classes.header}>
@@ -39,7 +43,13 @@ function Order() {
           </Typography>
         </Grid>
         <Grid item xs={12} md={2} className={classes.addButtonGrid}>
-          <Button color='primary' variant='contained' fullWidth>
+          <Button
+            color='primary'
+            variant='contained'
+            onClick={handleRequestsButton}
+            className={clsx({ [classes.hide]: !permissions?.orderManagement?.read })}
+            fullWidth
+          >
             Solicitações
           </Button>
         </Grid>
