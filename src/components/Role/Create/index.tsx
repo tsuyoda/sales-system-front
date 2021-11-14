@@ -29,7 +29,6 @@ function Register() {
 
   const roleMapper = useCallback(
     (values: IRoleEditForm) => {
-      console.log(values.resources);
       const permissions = values.resources
         .map((resource, rIndex) =>
           resource
@@ -54,7 +53,6 @@ function Register() {
   const handleOnSubmit = useCallback(
     (values, actions) => {
       const rolePayload = roleMapper(values);
-      console.log(rolePayload);
 
       api
         .post('/role', rolePayload)

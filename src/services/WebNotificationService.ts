@@ -18,7 +18,6 @@ export class WebNotificationService {
   public newNotification(title: string, description?: string, options?: NotificationOptions, onClick?: () => void) {
     if (this.hasNotification) {
       if (Notification?.permission === 'denied') return;
-      console.log(title);
       const n = new Notification(title, {
         ...options,
         ...{ icon: this.icon, silent: true, body: description || '', tag: title, renotify: true }

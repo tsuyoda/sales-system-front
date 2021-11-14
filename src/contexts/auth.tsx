@@ -21,7 +21,6 @@ function AuthProvider({ children }: IAuthProviderProps) {
     const storedToken = sessionStorage.getItem('@SalesSystem:token');
 
     if (storedUser && storedToken) {
-      console.log('render');
       if (socket?.connected) socket.disconnect();
       setSocket(
         io('http://localhost:7777', {
@@ -84,7 +83,6 @@ function AuthProvider({ children }: IAuthProviderProps) {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       Promise.all(permissionsPromises).then((grants: any[]) => {
-        console.log(Object.fromEntries(grants));
         setPermissions(Object.fromEntries(grants));
         setLoadingPermissions(false);
       });
