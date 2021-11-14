@@ -13,6 +13,9 @@ const UserFormSchema = Yup.object({
       'Senha deve conter no mínimo 8 carecteres, uma letra maiúscula, um número e um caracter especial'
     )
     .required('Campo de senha é obrigatório'),
+  user_password_confirmation: Yup.string()
+    .oneOf([Yup.ref('user_password'), null], 'Senhas não conferem')
+    .required('Confirmação de senha é obrigatório'),
   user_role: Yup.object({
     value: Yup.string().required('Nível de acesso é obrigatório')
   }),

@@ -7,6 +7,18 @@ const UserFormSchema = Yup.object({
     .matches(/^[\w.-]+$/, 'Usuário inválido')
     .lowercase()
     .required('Campo de usuário é obrigatório'),
+  user_password: Yup.string()
+    .matches(
+      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+      'Senha deve conter no mínimo 8 carecteres, uma letra maiúscula, um número e um caracter especial'
+    )
+    .optional(),
+  user_password_confirmation: Yup.string().when('user_password', {
+    is: (user_password: string) => !!user_password,
+    then: Yup.string()
+      .oneOf([Yup.ref('user_password'), null], 'Senhas não conferem')
+      .required('Confirmação de senha é obrigatório')
+  }),
   user_role: Yup.object({
     value: Yup.string().required('Nível de acesso é obrigatório')
   }),

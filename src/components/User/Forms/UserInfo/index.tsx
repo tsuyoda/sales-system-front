@@ -32,20 +32,10 @@ function UserInfo() {
     setFieldValue('user_role', value);
   }, []);
 
-  const handleEmailChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setFieldTouched('user_email', true);
-    setFieldValue('user_email', event.target.value);
-  }, []);
-
-  const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setFieldTouched('user_name', true);
-    setFieldValue('user_name', event.target.value);
-  }, []);
-
-  const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setFieldTouched('user_password', true);
-    setFieldValue('user_password', event.target.value);
-  }, []);
+  const handleTextChange = (fieldName: string) => (event: ChangeEvent<HTMLInputElement>) => {
+    setFieldTouched(fieldName, true);
+    setFieldValue(fieldName, event.target.value);
+  };
 
   return (
     <div>
@@ -57,13 +47,14 @@ function UserInfo() {
               variant='outlined'
               id='user_email'
               name='user_email'
-              label='E-mail*'
+              label='E-mail'
               error={touched.user_email && !!errors.user_email}
               helperText={touched.user_email && errors.user_email}
               component={TextFormField}
-              onChange={handleEmailChange}
+              onChange={handleTextChange('user_email')}
               value={values.user_email}
               fullWidth
+              required
             />
           </Grid>
           <Grid item xs={12}>
@@ -71,13 +62,14 @@ function UserInfo() {
               variant='outlined'
               id='user_name'
               name='user_name'
-              label='Usuário*'
+              label='Usuário'
               error={touched.user_name && !!errors.user_name}
               helperText={touched.user_name && errors.user_name}
               component={TextFormField}
-              onChange={handleNameChange}
+              onChange={handleTextChange('user_name')}
               value={values.user_name}
               fullWidth
+              required
             />
           </Grid>
           <Grid item xs={12}>
@@ -86,13 +78,30 @@ function UserInfo() {
               type='password'
               id='user_password'
               name='user_password'
-              label='Senha*'
+              label='Senha'
               error={touched.user_password && !!errors.user_password}
               helperText={touched.user_password && errors.user_password}
               component={TextFormField}
-              onChange={handlePasswordChange}
+              onChange={handleTextChange('user_password')}
               value={values.user_password}
               fullWidth
+              required={!window.location.toString().includes('edit')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Field
+              variant='outlined'
+              type='password'
+              id='user_password_confirmation'
+              name='user_password_confirmation'
+              label='Confirmar nova senha'
+              error={touched.user_password_confirmation && !!errors.user_password_confirmation}
+              helperText={touched.user_password_confirmation && errors.user_password_confirmation}
+              component={TextFormField}
+              onChange={handleTextChange('user_password_confirmation')}
+              value={values.user_password_confirmation}
+              fullWidth
+              required={!window.location.toString().includes('edit') || !!values.user_password}
             />
           </Grid>
         </Grid>

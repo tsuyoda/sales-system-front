@@ -12,7 +12,7 @@ import { INITIAL_FORM_VALUES } from '../../../constants/user';
 import { IUserRegisterForm, IUser } from '../../../interfaces/IUser';
 import api from '../../../services/api';
 import useStyles from './styles';
-import UserInfo from '../Forms/UserInfoCreate';
+import UserInfo from '../Forms/UserInfo';
 import PersonalInfo from '../Forms/PersonalInfo';
 import SellerInfo from '../Forms/SellerInfo/index';
 import { useHeaderTitle } from '../../../contexts/headerTitle';

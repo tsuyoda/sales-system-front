@@ -9,10 +9,10 @@ import axios from 'axios';
 import clsx from 'clsx';
 import UserFormSchema from './validations';
 import { INITIAL_FORM_VALUES } from '../../../constants/user';
-import { IUser, IUserRegisterForm } from '../../../interfaces/IUser';
+import { IUser, IUserPayload, IUserRegisterForm } from '../../../interfaces/IUser';
 import api from '../../../services/api';
 import useStyles from './styles';
-import UserInfo from '../Forms/UserInfoEdit';
+import UserInfo from '../Forms/UserInfo';
 import PersonalInfo from '../Forms/PersonalInfo';
 import SellerInfo from '../Forms/SellerInfo';
 import { useHeaderTitle } from '../../../contexts/headerTitle';
@@ -78,6 +78,8 @@ function Edit() {
         user_full_name: data.fullName || '',
         user_email: data.email || '',
         user_name: data.name || '',
+        user_password: '',
+        user_password_confirmation: '',
         user_doc_id: data.doc?.id || '',
         user_doc_type: data.doc?.type || 'F',
         user_contact_email: data.contact?.email || '',
@@ -110,10 +112,9 @@ function Edit() {
   }, []);
 
   const handleOnSubmit = useCallback(async (values: IUserRegisterForm, actions) => {
-    const userPaylod = {
+    const userPaylod: IUserPayload = {
       fullName: values.user_full_name,
       email: values.user_email,
-      password: values.user_password,
       name: values.user_name,
       doc: {
         id: values.user_doc_id,
@@ -133,6 +134,10 @@ function Edit() {
       },
       role: values.user_role.value
     };
+
+    if (values.user_password) {
+      userPaylod.password = values.user_password;
+    }
 
     try {
       const response = await api.put(`/user/${id}`, userPaylod);

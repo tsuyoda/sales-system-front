@@ -26,6 +26,7 @@ export interface IUserRegisterForm {
   user_email: string;
   user_full_name: string;
   user_password?: string;
+  user_password_confirmation?: string;
   user_role: IOption;
   user_name: string;
   user_doc_type: string;
@@ -51,4 +52,28 @@ export interface IUserFilterParams {
   };
   page?: number;
   limit?: number;
+}
+
+export interface IUserPayload {
+  fullName: string;
+  email: string;
+  password?: string;
+  name: string;
+  doc: {
+    id: string;
+    type: string;
+  };
+  contact: {
+    email: string;
+    tel: string;
+  };
+  address: {
+    street: string;
+    number: string;
+    complement?: string;
+    city: string;
+    postalCode: string;
+    state: string;
+  };
+  role: string;
 }
