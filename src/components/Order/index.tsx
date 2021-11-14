@@ -37,12 +37,12 @@ function Order() {
   return (
     <>
       <Grid container spacing={4} className={classes.header}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={6}>
           <Typography variant='subtitle1' className={classes.subtitle}>
             Gerencie os pedidos do sistema
           </Typography>
         </Grid>
-        <Grid item xs={12} md={2} className={classes.addButtonGrid}>
+        <Grid item xs={12} md={4} className={classes.addButtonGrid}>
           <Button
             color='primary'
             variant='contained'
@@ -50,7 +50,7 @@ function Order() {
             className={clsx({ [classes.hide]: !permissions?.orderManagement?.read })}
             fullWidth
           >
-            Solicitações
+            Gerenciamento de Pedidos
           </Button>
         </Grid>
         <Grid item xs={12} md={2} className={classes.addButtonGrid}>
