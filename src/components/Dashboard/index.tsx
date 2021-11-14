@@ -19,22 +19,22 @@ function Dashboard() {
 
   return (
     <Grid container spacing={6}>
-      <Grid item xs={4}>
+      <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
         <Card icon={<LoyaltyIcon fontSize='large' />} title='R$ 100.752,25' subTitle='Valor do estoque' />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
         <Card icon={<AllInboxIcon fontSize='large' />} title='200' subTitle='Itens no estoque' />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
         <Card icon={<PeopleIcon fontSize='large' />} title='500' subTitle='Total de clientes' />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
         <Card icon={<AttachMoneyIcon fontSize='large' />} title='R$ 50.120,50' subTitle='Vendas no ano' />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
         <Card icon={<EqualizerIcon fontSize='large' />} title='R$ 2.245,54' subTitle='Vendas no mês' />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center' }}>
         <Card icon={<LocalOfferIcon fontSize='large' />} title='R$ 30,00' subTitle='Ticket médio' />
       </Grid>
       <Grid item xs={12}>
