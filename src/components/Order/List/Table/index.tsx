@@ -198,10 +198,7 @@ function TableOrder({ filters, page, setPage, setUpdateRows, updateRows }: Table
                 <TableCell align='left'>{statusDict[row.status]}</TableCell>
                 <TableCell align='left'>{new Date(row.createdAt).toLocaleString()}</TableCell>
                 <TableCell align='right'>
-                  <IconButton
-                    onClick={handleActionsClick(row)}
-                    className={clsx({ [classes.hide]: !permissions?.orders?.update && !permissions?.orders?.delete })}
-                  >
+                  <IconButton onClick={handleActionsClick(row)}>
                     <MoreHorizIcon />
                   </IconButton>
                 </TableCell>
