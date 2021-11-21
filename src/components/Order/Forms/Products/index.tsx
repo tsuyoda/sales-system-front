@@ -3,6 +3,7 @@ import { Field, useFormikContext } from 'formik';
 import AddIcon from '@material-ui/icons/Add';
 import React, { ChangeEvent, useCallback, useEffect } from 'react';
 import { AxiosRequestConfig } from 'axios';
+import { toast } from 'react-toastify';
 import { IOrderEditForm } from '../../../../interfaces/IOrder';
 import TextFormField from '../../../Shared/FormFields/TextFormField';
 import ProductList from './ProductList';
@@ -67,6 +68,18 @@ function Products() {
     setFieldValue('order_insert_product_quantity', event.target.value);
   }, []);
 
+  const validateQuantity = (product: IProduct, quantity: number): boolean => {
+    if (quantity > product.quantity) {
+      toast.error(
+        `Quantidade insuficiente de estoque para o produto ${product.title}. Quantidade disponível: ${product.quantity}`
+      );
+
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSearchClick = async () => {
     const insertedProduct = values.order_insert_product;
 
@@ -77,9 +90,12 @@ function Products() {
     const findIndexItem = items.findIndex(item => item.product._id === insertedProduct.value);
 
     if (findIndexItem !== -1) {
-      items[findIndexItem].quantity =
-        Number(items[findIndexItem].quantity) + Number(values.order_insert_product_quantity) || 0;
-    } else {
+      const newQuantity = Number(items[findIndexItem].quantity) + Number(values.order_insert_product_quantity) || 0;
+
+      if (validateQuantity(productData, newQuantity)) {
+        items[findIndexItem].quantity = newQuantity;
+      }
+    } else if (validateQuantity(productData, values.order_insert_product_quantity || 0)) {
       items.push({
         quantity: values.order_insert_product_quantity || 0,
         product: productData,
