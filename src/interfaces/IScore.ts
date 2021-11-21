@@ -6,7 +6,7 @@ export interface IScore {
   _id: string;
   points: number;
   customer: ICustomer;
-  scoreLevel: IScoreLevel;
+  scoreLevel?: IScoreLevel;
   createdAt: string;
 }
 

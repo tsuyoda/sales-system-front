@@ -44,7 +44,7 @@ function Payment() {
 
     let discountValue = (totalItemsValue * sellerDiscount) / 100;
 
-    if (customer?.participatePointsProgram && score?.scoreLevel.benefits) {
+    if (customer?.participatePointsProgram && score?.scoreLevel?.benefits) {
       score.scoreLevel.benefits.forEach(benefit => {
         if (deliveryValue && benefit.type === 'shipping_discount') {
           discountValue += deliveryValue * benefit.value;

@@ -13,7 +13,7 @@ function BenefitList() {
     order_customer_score: score
   } = values;
 
-  const filterBenefits = score?.scoreLevel.benefits
+  const filterBenefits = score?.scoreLevel?.benefits
     ? score.scoreLevel.benefits.filter(benefit => {
         if (benefit.type === 'shipping_discount' && !values.order_value_delivery) {
           return false;

@@ -139,7 +139,7 @@ function TableScore({ filters, page, setPage, setUpdateRows, updateRows }: Table
                 <TableCell component='th' scope='row'>
                   {row.customer.fullName}
                 </TableCell>
-                <TableCell align='left'>{row.scoreLevel.name}</TableCell>
+                <TableCell align='left'>{row.scoreLevel?.name}</TableCell>
                 <TableCell align='left'>{row.points}</TableCell>
                 <TableCell align='right'>
                   <IconButton

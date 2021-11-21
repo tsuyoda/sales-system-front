@@ -28,7 +28,7 @@ function PointsProgram() {
             <strong>Pontuação atual</strong>: {score ? score.points : 0}
           </Grid>
           <Grid item xs={4}>
-            <strong>Nível</strong>: {score?.scoreLevel.name || ' - '}
+            <strong>Nível</strong>: {score?.scoreLevel?.name || ' - '}
           </Grid>
         </Grid>
         <BenefitList />
