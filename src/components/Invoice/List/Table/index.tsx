@@ -102,10 +102,7 @@ function TableInvoice({ filters, page, setPage, setUpdateRows, updateRows }: Tab
                 <TableCell align='left'>{`R$ ${row.value.total.toFixed(2)}`.replace('.', ',')}</TableCell>
                 <TableCell align='left'>{new Date(row.createdAt).toLocaleString()}</TableCell>
                 <TableCell align='right'>
-                  <IconButton
-                    onClick={handleOnClick(row._id)}
-                    className={clsx({ [classes.hide]: !permissions?.orders?.update && !permissions?.orders?.delete })}
-                  >
+                  <IconButton onClick={handleOnClick(row._id)}>
                     <FontAwesomeIcon icon={faFileInvoice} />
                   </IconButton>
                 </TableCell>
