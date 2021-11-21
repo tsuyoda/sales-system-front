@@ -150,7 +150,7 @@ function TableUser({ filters, page, setPage, setUpdateRows, updateRows }: TableU
                 </TableCell>
                 <TableCell align='left'>{row.name}</TableCell>
                 <TableCell align='left'>{row.email}</TableCell>
-                <TableCell align='left'>{row.role.name}</TableCell>
+                <TableCell align='left'>{row.role?.name}</TableCell>
                 <TableCell align='right'>
                   <IconButton
                     onClick={handleActionsClick(row)}
